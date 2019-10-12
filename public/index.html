@@ -6,14 +6,21 @@
     <title>Welcome to Firebase Hosting</title>
 
     <!-- update the version number as needed -->
+    <!--
     <script defer src="/__/firebase/7.2.0/firebase-app.js"></script>
+    -->
     <!-- include only the Firebase features as you need -->
+    <!--
     <script defer src="/__/firebase/7.2.0/firebase-auth.js"></script>
     <script defer src="/__/firebase/7.2.0/firebase-database.js"></script>
     <script defer src="/__/firebase/7.2.0/firebase-messaging.js"></script>
     <script defer src="/__/firebase/7.2.0/firebase-storage.js"></script>
+    -->
     <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+    <!-- 
+      <script defer src="/__/firebase/init.js"></script>
+    -->
+    
 
     <style media="screen">
       body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
@@ -34,6 +41,19 @@
         height: 400px;  /* The height is 400 pixels */
         width: 100%;  /* The width is the width of the web page */
       }
+
+      #msgbox {
+        width: 100%;
+        height: 150px;
+      }
+
+      #debug {
+        width: 100%;
+        height: 25px;
+        background-color: #999999;
+        overflow: hidden;
+      }
+
     </style>
   </head>
   <body>
@@ -46,27 +66,52 @@
       <p id="demo"></p>
       
       <div id="map"></div>
-      
+      <p></p>
+      <p></p>
+
+      <div id="msgbox"></div>
+      <div id="debug"></div>
+
       <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnbbT4GFpopHYswSNL0eEAMtzHDqk6jQ0&callback=initMap&libraries=geometry">
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnbbT4GFpopHYswSNL0eEAMtzHDqk6jQ0&callback=initMap&sensor=false&v=3&libraries=geometry">
       </script>
       
       <script>
+        
+        var msgbox = document.getElementById('msgbox');
         var x = document.getElementById("demo");
+        var cp1Found = false;
+        var cp2Found = false;
+        var cp3Found = false;
+
+        var d;
+        var checkLocationCounter;
         var map, infoWindow;
-    
+        //infoWindow = new google.maps.InfoWindow;
+        var cpFlag = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        var initialPosition = {lat: 1.3339167, lng: 103.9654622};
+        const cp1 = {lat: 1.3559309, lng: 103.9868959};
+        const cp2 = {lat: 1.3579501, lng: 103.9869083};
+        const cp3 = {lat: 1.3602641, lng: 103.9903319};
+        const sensiDist = 0.03;
+
+        var cp1Marker, cp2Marker, cp3Marker, myLocationMarker, iconMyLocation;        
+        
+        //setInterval(getLocation,1000)
+
         function getLocation() {
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
               var pos = {
                 lat: position.coords.latitude,
-                lng: position.coords.longitude
+                lng: position.coords.longitude                
               };
+              //console.log(pos);
 
-              infoWindow.setPosition(pos);
-              infoWindow.setContent('Location found.');
-              infoWindow.open(map);
-              map.setCenter(pos);
+              //infoWindow.setPosition(pos);
+              //infoWindow.setContent('Location found.');
+              //infoWindow.open(map);
+              //map.setCenter(pos);
               return pos;
             }, function() {
               handleLocationError(true, infoWindow, map.getCenter());
@@ -83,6 +128,7 @@
             //"<br>Longitude: " + position.coords.longitude;
         }
 */
+      var myLocationMarker;
 
       const trackLocation = ({ onSuccess, onError = () => { } }) => {
         if ('geolocation' in navigator === false) {
@@ -99,10 +145,6 @@
 
       // Initialize and add the map
       function initMap() {
-        const initialPosition = {lat: 1.3339167, lng: 103.9654622};
-
-        var cp1 = {lat: 1.3559309, lng: 103.9868959};
-        var cp2 = {lat: 1.3579501, lng: 103.9869083};
         
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 15,
@@ -179,33 +221,56 @@
               ]
             }
           ]
-        });
+        });        
 
-        infoWindow = new google.maps.InfoWindow;
-        var cpFlag = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-
-        var cp1Marker = new google.maps.Marker({
+        cp1Marker = new google.maps.Marker({
           position: cp1,
           map: map,
           icon: cpFlag,
           label: 'T3_1'
         });
+        console.log(cp1Marker)
 
-        var cp2Marker = new google.maps.Marker({
+        cp2Marker = new google.maps.Marker({
           position: cp2,
           map: map,
           icon: cpFlag,
           label: 'T3_2'
         });
 
-        var myLocationMarker = new google.maps.Marker({
+        cp3Marker = new google.maps.Marker({
+          position: cp3,
+          map: map,
+          icon: cpFlag,
+          label: 'J_1'
+        });
+
+      iconMyLocation = {
+        url: 'https://cdn4.iconfinder.com/data/icons/complete-common-version-5-1/1024/location10-128.png', // url
+        scaledSize: new google.maps.Size(20, 20), // scaled size
+//        origin: new google.maps.Point(0,0), // origin
+//        anchor: new google.maps.Point(0, 0) // anchor
+      };
+
+      myLocationMarker = new google.maps.Marker({
           position: initialPosition,
           map: map,
-          //icon: 'https://cdn4.iconfinder.com/data/icons/complete-common-version-5-1/1024/location10-128.png'
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 10
+          icon: iconMyLocation,
           //label: 'me'
         });
+
+
+        // Use the new trackLocation function.
+        trackLocation({
+          onSuccess: ({ coords: { latitude: lat, longitude: lng } }) => {
+            myLocationMarker.setPosition({lat, lng});            
+            //map.panTo({lat, lng});
+          },
+          onError: null //err =>
+            //alert("error")
+            //alert(`Error: ${getPositionErrorMessage(err.code) || err.message}`)
+        });        
+
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
@@ -215,10 +280,10 @@
               lng: position.coords.longitude
             };
 
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
-            infoWindow.open(map);
-            map.setCenter(pos);
+            //infoWindow.setPosition(pos);
+            //infoWindow.setContent('Location found.');
+            //infoWindow.open(map);
+            //map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
@@ -227,33 +292,42 @@
           handleLocationError(false, infoWindow, map.getCenter());
         }
 
-        var calcTimer = setInterval(calcDistance(cp1Marker.position,myLocationMarker.position), 1000);
-        console.log(cp1Marker.position);
-        console.log(myLocationMarker.position);
-
-          // Use the new trackLocation function.
-        trackLocation({
-          onSuccess: ({ coords: { latitude: lat, longitude: lng } }) => {
-            myLocationMarker.setPosition({lat, lng});
-            map.panTo({lat, lng});
-          },
-          onError: err =>
-            alert(`Error: ${getPositionErrorMessage(err.code) || err.message}`)
-        });
       }
       
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-          'Error: The Geolocation service failed.' :
-          'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
+      function tracking() {
+        var distanceDiff = calcDistance(cp3Marker.position,myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp3Found == false) {
+          msgbox.innerHTML += "You found the Starbucks CP! Here's your clue"
+          cp3Found = true;
+        }
       }
 
       function calcDistance(p1, p2) {
-        var d = (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000).toFixed(2);
+        d = (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000);
         console.log(d);
+        debug.innerHTML = d;
+        return d;
       }
+      
+      checkLocationCounter = setInterval(tracking, 5000);
+
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        //infoWindow.setPosition(pos);
+        //infoWindow.setContent(browserHasGeolocation ?
+        // 'Error: The Geolocation service failed.' :
+        //  'Error: Your browser doesn\'t support geolocation.');
+        //infoWindow.open(map);
+      }
+
+
+      msgbox.innerHTML = "Get-movin! Mission tasks will be prompted here when you get close to the markers.<br>";
+      
+      /* try {
+        var cp1counter = setInterval(calcDistance(,getLocation()),3000);
+      } catch(err) {
+        alert(err);
+      } */
 
       </script>
       
@@ -281,6 +355,7 @@
         //
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
+        /*
         try {
           let app = firebase.app();
           let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
@@ -289,6 +364,7 @@
           console.error(e);
           // document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
         }
+        */
       });
     </script>
     
