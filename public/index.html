@@ -49,7 +49,7 @@
       }
 
       #debug {
-        height: 300px;
+        height: 240px;
         width: 100%;        
         background-color: #999999;
         overflow: scroll;
@@ -73,12 +73,24 @@
       <div id="msgbox"></div>
       <div id="debug"></div>
 
+      <input type="button" value="Simulate CP1" name="Simulate CP1" onclick="simulateCP('cp1Marker')"/>
+      <input type="button" value="Simulate CP2" name="Simulate CP2" onclick="simulateCP('cp2Marker')"/>
+      <input type="button" value="Simulate CP3" name="Simulate CP3" onclick="simulateCP('cp3Marker')"/>
+      <input type="button" value="Simulate CP4" name="Simulate CP4" onclick="simulateCP('cp4Marker')"/>
+      <input type="button" value="Simulate CP5" name="Simulate CP5" onclick="simulateCP('cp5Marker')"/>
+      <input type="button" value="Simulate CP6" name="Simulate CP6" onclick="simulateCP('cp6Marker')"/>
+
       <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnbbT4GFpopHYswSNL0eEAMtzHDqk6jQ0&callback=initMap&sensor=false&v=3&libraries=geometry">
       </script>
+
+
+      <script src="init.js"></script>
       
       <script>
         
+        //import ("init.js");
+
         var msgbox = document.getElementById('msgbox');
         var x = document.getElementById("demo");
         var cp1Found = false;
@@ -99,20 +111,6 @@
         var map, infoWindow;
         //infoWindow = new google.maps.InfoWindow;
         var cpFlag = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-        var initialPosition = {lat: 1.3339167, lng: 103.9654622};
-        const cp1 = {lat: 1.3533641, lng: 103.9836623};
-        const cp2 = {lat: 1.3570188, lng: 103.9854495};
-        const cp3 = {lat: 1.3583463, lng: 103.987522};
-        const cp4 = {lat: 1.3583463, lng: 103.987522};
-        const cp5 = {lat: 1.3619089, lng: 103.9890716};
-        const cp6 = {lat: 1.3612928, lng: 103.9901209};
-        const cp7 = {lat: 1.3562326, lng: 103.9889757};
-        const cp8 = {lat: 1.3540811, lng: 103.9880787};
-        const cp9 = {lat: 1.3381628, lng: 103.9821102};
-        const cp10 = {lat: 1.3381628, lng: 103.9821102};
-        const cp11 = {lat: 1.4093858, lng: 103.8680694};
-        const cp12 = {lat: 1.4089909, lng: 103.8679227};
-        const sensiDist = 0.03;
 
         var cp1Marker, cp2Marker, cp3Marker, cp4Marker, cp5Marker, cp6Marker, cp7Marker, cp8Marker, cp9Marker, cp10Marker,myLocationMarker, iconMyLocation;
         
@@ -166,7 +164,7 @@
       function initMap() {
         
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
+          zoom: 13,
           center: cp1,
           styles: [
             {
@@ -254,36 +252,38 @@
           position: cp2,
           map: map,
           icon: cpFlag,
-          label: 'T3_2'
+          label: 'J_1'
         });
 
         cp3Marker = new google.maps.Marker({
           position: cp3,
           map: map,
           icon: cpFlag,
-          label: 'J_1'
+          label: 'T1_1'
         });
 
         cp4Marker = new google.maps.Marker({
           position: cp4,
           map: map,
           icon: cpFlag,
-          label: 'J_2'
+          label: 'T2_1'
         });
 
         cp5Marker = new google.maps.Marker({
           position: cp5,
           map: map,
           icon: cpFlag,
-          label: 'T1_1'
+          label: 'T4_1'
         });
         
         cp6Marker = new google.maps.Marker({
           position: cp6,
           map: map,
           icon: cpFlag,
-          label: 'T1_2'
+          label: 'X_1'
         });
+
+        /*
 
         cp7Marker = new google.maps.Marker({
           position: cp7,
@@ -326,6 +326,8 @@
           icon: cpFlag,
           label: 'B_2'
         });
+
+        */
 
       iconMyLocation = {
         url: 'https://cdn4.iconfinder.com/data/icons/complete-common-version-5-1/1024/location10-128.png', // url
@@ -378,33 +380,138 @@
       
       function tracking() {
 
+        debug.innerHTML = "";
+
+        // cp1 tracking
+        var distanceDiff = calcDistance(cp1Marker, cp1Marker.position, myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp1Found == false) {
+          msgbox.innerHTML += cp1Tasks;
+          debug.innerHTML += cp1Marker.label + ": " + distanceDiff + "<br>";
+          cp1Found = true;
+        } else {
+          debug.innerHTML += cp1Marker.label + ": " + distanceDiff + "<br>";
+        }
+
+        // cp2 tracking
+        var distanceDiff = calcDistance(cp2Marker, cp2Marker.position, myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp2Found == false) {
+          msgbox.innerHTML += cp2Tasks;
+          debug.innerHTML += cp2Marker.label + ": " + distanceDiff + "<br>";
+          cp2Found = true;
+        } else {
+          debug.innerHTML += cp2Marker.label + ": " + distanceDiff + "<br>";
+        }
+
         // cp3 tracking
         var distanceDiff = calcDistance(cp3Marker, cp3Marker.position, myLocationMarker.position);
         if(distanceDiff <= sensiDist && cp3Found == false) {
-          msgbox.innerHTML += "You found the Starbucks CP! Here's your clue"
+          msgbox.innerHTML += cp3Tasks;
+          debug.innerHTML += cp3Marker.label + ": " + distanceDiff + "<br>";
           cp3Found = true;
+        } else {
+          debug.innerHTML += cp3Marker.label + ": " + distanceDiff + "<br>";
         }
-        
+
+        // cp4 tracking
+        var distanceDiff = calcDistance(cp4Marker, cp4Marker.position, myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp4Found == false) {
+          msgbox.innerHTML += cp4Tasks;
+          debug.innerHTML += cp4Marker.label + ": " + distanceDiff + "<br>";
+          cp4Found = true;
+        } else {
+          debug.innerHTML += cp4Marker.label + ": " + distanceDiff + "<br>";
+        }
+
+        // cp5 tracking
+        var distanceDiff = calcDistance(cp5Marker, cp5Marker.position, myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp5Found == false) {
+          msgbox.innerHTML += cp5Tasks;
+          debug.innerHTML += cp5Marker.label + ": " + distanceDiff + "<br>";
+          cp5Found = true;
+        } else {
+          debug.innerHTML += cp5Marker.label + ": " + distanceDiff + "<br>";
+        }
+
+        // cp6 tracking
+        var distanceDiff = calcDistance(cp6Marker, cp6Marker.position, myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp6Found == false) {
+          msgbox.innerHTML += cp6Tasks;
+          debug.innerHTML += cp6Marker.label + ": " + distanceDiff + "<br>";
+          cp6Found = true;
+        } else {
+          debug.innerHTML += cp6Marker.label + ": " + distanceDiff + "<br>";
+        }
+
+        /*
+
+        // cp7 tracking
+        var distanceDiff = calcDistance(cp7Marker, cp7Marker.position, myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp7Found == false) {
+          msgbox.innerHTML += "You've reached the T2_1 (cp7) checkpoint!"
+          debug.innerHTML += cp7Marker.label + ": " + distanceDiff + "<br>";
+          cp7Found = true;
+        } else {
+          debug.innerHTML += cp7Marker.label + ": " + distanceDiff + "<br>";
+        }
+
+        // cp8 tracking
+        var distanceDiff = calcDistance(cp8Marker, cp8Marker.position, myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp8Found == false) {
+          msgbox.innerHTML += "You've reached the T2_2 (cp8) checkpoint!"
+          debug.innerHTML += cp8Marker.label + ": " + distanceDiff + "<br>";
+          cp8Found = true;
+        } else {
+          debug.innerHTML += cp8Marker.label + ": " + distanceDiff + "<br>";
+        }
+
+        // cp9 tracking
+        var distanceDiff = calcDistance(cp9Marker, cp9Marker.position, myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp9Found == false) {
+          msgbox.innerHTML += "You've reached the T4_1 (cp9) checkpoint!"
+          debug.innerHTML += cp9Marker.label + ": " + distanceDiff + "<br>";
+          cp9Found = true;
+        } else {
+          debug.innerHTML += cp9Marker.label + ": " + distanceDiff + "<br>";
+        }
+
+        // cp10 tracking
+        var distanceDiff = calcDistance(cp10Marker, cp10Marker.position, myLocationMarker.position);
+        if(distanceDiff <= sensiDist && cp10Found == false) {
+          msgbox.innerHTML += "You've reached the T4_2 (cp10) checkpoint!"
+          debug.innerHTML += cp10Marker.label + ": " + distanceDiff + "<br>";
+          cp10Found = true;
+        } else {
+          debug.innerHTML += cp10Marker.label + ": " + distanceDiff + "<br>";
+        }
+
         // cp11 tracking
         var distanceDiff = calcDistance(cp11Marker, cp11Marker.position, myLocationMarker.position);
         if(distanceDiff <= sensiDist && cp11Found == false) {
           msgbox.innerHTML += "You found the bonus Seletar Air CP!"
+          debug.innerHTML += cp11Marker.label + ": " + distanceDiff + "<br>";
           cp11Found = true;
+        } else {
+          debug.innerHTML += cp11Marker.label + ": " + distanceDiff + "<br>";
         }
 
         // cp12 tracking
         var distanceDiff = calcDistance(cp12Marker, cp12Marker.position, myLocationMarker.position);
         if(distanceDiff <= sensiDist && cp12Found == false) {
           msgbox.innerHTML += "You found the Airplane!"
+          debug.innerHTML += cp12Marker.label + ": " + distanceDiff + "<br>";
           cp12Found = true;
+        } else {
+          debug.innerHTML += cp12Marker.label + ": " + distanceDiff + "<br>";
         }
 
-      }
+        */
+
+        }
 
       function calcDistance(cpMarker, p1, p2) {
         d = (google.maps.geometry.spherical.computeDistanceBetween(p1, p2) / 1000);
-        console.log(cpMarker.label + ": " + d);
-        debug.innerHTML = cpMarker.label + ": " + d;
+        //console.log(cpMarker.label + ": " + d);
+        //debug.innerHTML = cpMarker.label + ": " + d;
         return d;
       }
       
@@ -427,6 +534,34 @@
       } catch(err) {
         alert(err);
       } */
+
+      function simulateCP(cpMarker){
+          if(cpMarker == "cp1Marker") {
+            myLocationMarker.setPosition(cp1Marker.position);
+            map.panTo(cp1Marker.position);
+          }
+
+          if(cpMarker == "cp2Marker") {
+            myLocationMarker.setPosition(cp2Marker.position);
+            map.panTo(cp2Marker.position);
+          }
+          if(cpMarker == "cp3Marker") {
+            myLocationMarker.setPosition(cp3Marker.position);
+            map.panTo(cp3Marker.position);
+          }
+          if(cpMarker == "cp4Marker") {
+            myLocationMarker.setPosition(cp4Marker.position);
+            map.panTo(cp4Marker.position);
+          }
+          if(cpMarker == "cp5Marker") {
+            myLocationMarker.setPosition(cp5Marker.position);
+            map.panTo(cp5Marker.position);
+          }
+          if(cpMarker == "cp6Marker") {
+            myLocationMarker.setPosition(cp6Marker.position);
+            map.panTo(cp6Marker.position);
+          }
+      }
 
       </script>
       
