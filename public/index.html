@@ -445,12 +445,13 @@
         // cp7 tracking
         var distanceDiff = calcDistance(cp7Marker, cp7Marker.position, myLocationMarker.position);
         if(distanceDiff <= sensiDist && cp7Found == false) {
-          msgbox.innerHTML += cp7tasks;
+          msgbox.innerHTML += cp7Tasks;
           debug.innerHTML += cp7Marker.label + ": " + distanceDiff + "<br>";
           cp7Found = true;
         } else {
           debug.innerHTML += cp7Marker.label + ": " + distanceDiff + "<br>";
         }
+
 
         /*
         // cp8 tracking
@@ -537,32 +538,32 @@
       function simulateCP(cpMarker){
           if(cpMarker == "cp1Marker") {
             myLocationMarker.setPosition(cp1Marker.position);
-            map.panTo(cp1Marker.position);
+            //map.panTo(cp1Marker.position);
           }
 
           if(cpMarker == "cp2Marker") {
             myLocationMarker.setPosition(cp2Marker.position);
-            map.panTo(cp2Marker.position);
+            //map.panTo(cp2Marker.position);
           }
           if(cpMarker == "cp3Marker") {
             myLocationMarker.setPosition(cp3Marker.position);
-            map.panTo(cp3Marker.position);
+            //map.panTo(cp3Marker.position);
           }
           if(cpMarker == "cp4Marker") {
             myLocationMarker.setPosition(cp4Marker.position);
-            map.panTo(cp4Marker.position);
+            //map.panTo(cp4Marker.position);
           }
           if(cpMarker == "cp5Marker") {
             myLocationMarker.setPosition(cp5Marker.position);
-            map.panTo(cp5Marker.position);
+            //map.panTo(cp5Marker.position);
           }
           if(cpMarker == "cp6Marker") {
             myLocationMarker.setPosition(cp6Marker.position);
-            map.panTo(cp6Marker.position);
+            //map.panTo(cp6Marker.position);
           }
           if(cpMarker == "cp7Marker") {
             myLocationMarker.setPosition(cp7Marker.position);
-            map.panTo(cp7Marker.position);
+            //map.panTo(cp7Marker.position);
           }          
       }
 
