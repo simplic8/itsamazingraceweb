@@ -28,6 +28,7 @@ const cp5 = {lat: 1.3374532, lng: 103.9828052}; // T4_1
 //const cp10 = {lat: 1.3393003, lng: 103.9835068}; // T4_2
 const cp6 = {lat: 1.3352068, lng: 103.9620639}; // X_1
 //const cp12 = {lat: 1.4089909, lng: 103.8679227}; // B_2
+const cp7 = {lat: 1.333927, lng: 103.9662468}; // Home
 const sensiDist = 0.03;
 
 cp1Tasks = "<font style='color:#FF6633;font-style:italic'>You found Checkpoint 1 (T3_1)!</font><br> <font>Click on this <a href='https://drive.google.com/open?id=1iR_7xFnzB5sZkJdLg-GPCaC_1bsLy2pb' target='_new1' style='font-style:underline'>link</a> to get your tasks</font><br>";
@@ -36,3 +37,4 @@ cp3Tasks = "<font style='color:#FF6633;font-style:italic'>You found Checkpoint 3
 cp4Tasks = "<font style='color:#FF6633;font-style:italic'>You found Checkpoint 4 (T2_1)!</font><br> <font>Click on this <a href='https://drive.google.com/open?id=17Ki7cM9gy7ErxGTjeLW6qZ4lZ_1TSEIt' target='_new4' style='font-style:underline'>link</a> to get your tasks</font><br>";
 cp5Tasks = "<font style='color:#FF6633;font-style:italic'>You found Checkpoint 5 (T4_1)!</font><br> <font>Click on this <a href='https://drive.google.com/open?id=1UOE4v0k9YdUzsQh6XQaOso9bioF4YAZ-' target='_new5' style='font-style:underline'>link</a> to get your tasks</font><br>";
 cp6Tasks = "<font style='color:#FF6633;font-style:italic'>You found Checkpoint 6 (X_1)!</font><br> <font>Click on this <a href='https://drive.google.com/open?id=185zVl_scy0CTgULr21QvWxH5GXzsRMyc' target='_new6' style='font-style:underline'>link</a> to get your tasks</font><br>";
+cp7Tasks = "<font style='color:#FF6633;font-style:italic'>You are at Checkpoint Start!</font><br> </font><font>Click on this <a href='https://drive.google.com/open?id=1bQD8KaCHKDXUYPt3vv9R4A_wXltFhOcx' target='_new7' style='font-style:underline'>link</a> to get your first instructions.</font><br>";

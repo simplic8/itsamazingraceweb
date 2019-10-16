@@ -73,6 +73,7 @@
       <div id="msgbox"></div>
       <div id="debug"></div>
 
+      <input type="button" value="Simulate Start" name="Simulate CP7" onclick="simulateCP('cp7Marker')"/>
       <input type="button" value="Simulate CP1" name="Simulate CP1" onclick="simulateCP('cp1Marker')"/>
       <input type="button" value="Simulate CP2" name="Simulate CP2" onclick="simulateCP('cp2Marker')"/>
       <input type="button" value="Simulate CP3" name="Simulate CP3" onclick="simulateCP('cp3Marker')"/>
@@ -283,15 +284,14 @@
           label: 'X_1'
         });
 
-        /*
-
         cp7Marker = new google.maps.Marker({
           position: cp7,
           map: map,
           icon: cpFlag,
-          label: 'T2_1'
+          label: 'Start'
         });
 
+        /*
         cp8Marker = new google.maps.Marker({
           position: cp8,
           map: map,
@@ -442,18 +442,17 @@
           debug.innerHTML += cp6Marker.label + ": " + distanceDiff + "<br>";
         }
 
-        /*
-
         // cp7 tracking
         var distanceDiff = calcDistance(cp7Marker, cp7Marker.position, myLocationMarker.position);
         if(distanceDiff <= sensiDist && cp7Found == false) {
-          msgbox.innerHTML += "You've reached the T2_1 (cp7) checkpoint!"
+          msgbox.innerHTML += cp7tasks;
           debug.innerHTML += cp7Marker.label + ": " + distanceDiff + "<br>";
           cp7Found = true;
         } else {
           debug.innerHTML += cp7Marker.label + ": " + distanceDiff + "<br>";
         }
 
+        /*
         // cp8 tracking
         var distanceDiff = calcDistance(cp8Marker, cp8Marker.position, myLocationMarker.position);
         if(distanceDiff <= sensiDist && cp8Found == false) {
@@ -561,6 +560,10 @@
             myLocationMarker.setPosition(cp6Marker.position);
             map.panTo(cp6Marker.position);
           }
+          if(cpMarker == "cp7Marker") {
+            myLocationMarker.setPosition(cp7Marker.position);
+            map.panTo(cp7Marker.position);
+          }          
       }
 
       </script>
